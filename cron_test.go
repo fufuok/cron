@@ -721,5 +721,5 @@ func stop(cron *Cron) chan bool {
 
 // newWithSeconds returns a Cron with the seconds field enabled.
 func newWithSeconds() *Cron {
-	return New(WithParser(secondParser), WithChain())
+	return New(WithSeconds())
 }
