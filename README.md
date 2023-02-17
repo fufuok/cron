@@ -3,6 +3,18 @@
 
 # cron
 
+a cron library for go, optimized. 
+
+*forked from robfig/cron@Commits on Jan 6, 2021*
+
+## Merge pull request
+
+- [feat: support overriding the Prev time for a new job/entry](https://github.com/robfig/cron/pull/446)
+- [Reduce LARGE CPU consumption by using min-heap instead of sorting all entries every time](https://github.com/robfig/cron/pull/423)
+- [add schedule.Prev()](https://github.com/robfig/cron/pull/361) 
+
+------
+
 Cron V3 has been released!
 
 To download the specific tagged release, run:
