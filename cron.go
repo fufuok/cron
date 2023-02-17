@@ -190,6 +190,8 @@ func (c *Cron) Schedule(schedule Schedule, cmd Job, entryOpts ...EntryOption) En
 	return entry.ID
 }
 
+var LongLongAgo = time.Unix(0, 1)
+
 // EntryOption is a hook which allows the Entry to be altered before being
 // committed internally.
 type EntryOption func(*Entry)
@@ -200,6 +202,11 @@ func WithPrev(prev time.Time) EntryOption {
 	return func(e *Entry) {
 		e.Prev = prev
 	}
+}
+
+// WithRunImmediately this job will be run as soon as the job is added
+func WithRunImmediately() EntryOption {
+	return WithPrev(LongLongAgo)
 }
 
 // Entries returns a snapshot of the cron entries.

@@ -687,9 +687,10 @@ func TestJobWithCustomPrev(t *testing.T) {
 	// expected timeline: 1s ... 4s ... stop (2 calls)
 	// if prev was ignored, the func would only be called once (at 3s)
 	cron.AddFunc("@every 3s", func() { atomic.AddInt64(&calls, 1) }, WithPrev(time.Now().Add(-2*time.Second)))
+	cron.AddFunc("@every 4s", func() { atomic.AddInt64(&calls, 1) }, WithRunImmediately())
 	cron.Start()
 	time.Sleep(5 * time.Second)
-	if atomic.LoadInt64(&calls) != 2 {
+	if atomic.LoadInt64(&calls) != 4 {
 		t.Errorf("called %d times, expected 2\n", calls)
 	}
 }
