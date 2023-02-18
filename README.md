@@ -5,13 +5,47 @@
 
 a cron library for go, optimized. 
 
-*forked from robfig/cron@Commits on Jan 6, 2021*
+*forked from robfig/cron/v3@Commits on Jan 6, 2021*
 
-## Merge pull request
+## ✨ Features
 
-- [feat: support overriding the Prev time for a new job/entry](https://github.com/robfig/cron/pull/446)
-- [Reduce LARGE CPU consumption by using min-heap instead of sorting all entries every time](https://github.com/robfig/cron/pull/423)
-- [add schedule.Prev()](https://github.com/robfig/cron/pull/361) 
+- Added `cron.WithSecondOptional()`
+- Support `WithRunImmediately()` option for job scheduling
+- Merge pull request
+  - [feat: support overriding the Prev time for a new job/entry](https://github.com/robfig/cron/pull/446)
+  - [Reduce LARGE CPU consumption by using min-heap instead of sorting all entries every time](https://github.com/robfig/cron/pull/423)
+  - [add schedule.Prev()](https://github.com/robfig/cron/pull/361) 
+
+## ⚡️ Quickstart
+
+```go
+package main
+
+import (
+	"fmt"
+	"time"
+
+	"github.com/fufuok/cron"
+)
+
+func main() {
+	c := cron.New(cron.WithSecondOptional())
+	c.Start()
+	defer c.Stop()
+
+	id, _ := c.AddFunc(
+		"* * * * *",
+		func() { fmt.Println("Job.0s:", time.Now()) },
+		cron.WithRunImmediately(),
+	)
+	fmt.Println("Next:", c.Entry(id).Next, "Prev", c.Entry(id).Prev)
+
+	_, _ = c.AddFunc("* * * * * *", func() { fmt.Println("Job.s:", time.Now()) })
+	_, _ = c.AddFunc("1,20-40/5 * * * * *", func() { fmt.Println("Job/5:", time.Now()) })
+
+	time.Sleep(2 * time.Minute)
+}
+```
 
 ------
 

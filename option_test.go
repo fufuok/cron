@@ -40,3 +40,22 @@ func TestWithVerboseLogger(t *testing.T) {
 		t.Error("expected to see some actions, got:", out)
 	}
 }
+
+func TestWithSecondOptional(t *testing.T) {
+	c := New(WithSecondOptional())
+	id1, err := c.AddFunc("5 * * * *", func() {})
+	if err != nil {
+		t.Errorf("add func %v", err)
+	}
+	id2, err := c.AddFunc("* 5 * * * *", func() {})
+	if err != nil {
+		t.Errorf("add func %v", err)
+	}
+	c.Start()
+	next1 := c.Entry(id1).Next
+	next2 := c.Entry(id2).Next
+	if next1 != next2 {
+		t.Errorf("expect the same execution time: %s, %s", next1, next2)
+	}
+	c.Stop()
+}
