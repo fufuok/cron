@@ -24,7 +24,10 @@ type Cron struct {
 	parser    ScheduleParser
 	nextID    EntryID
 	jobWaiter sync.WaitGroup
+	timenow   TimeNow
 }
+
+type TimeNow func() time.Time
 
 // ScheduleParser is an interface for schedule spec parsers that return a Schedule
 type ScheduleParser interface {
@@ -137,6 +140,7 @@ func New(opts ...Option) *Cron {
 		logger:    DefaultLogger,
 		location:  time.Local,
 		parser:    standardParser,
+		timenow:   time.Now,
 	}
 	for _, opt := range opts {
 		opt(c)
@@ -302,8 +306,8 @@ func (c *Cron) run() {
 
 		for {
 			select {
-			case now = <-timer.C:
-				now = now.In(c.location)
+			case <-timer.C:
+				now = c.now()
 				c.logger.Info("wake", "now", now)
 
 				// Run every entry whose next time was less than now
@@ -359,7 +363,7 @@ func (c *Cron) startJob(j Job) {
 
 // now returns current time in c location
 func (c *Cron) now() time.Time {
-	return time.Now().In(c.location)
+	return c.timenow().In(c.location)
 }
 
 // Stop stops the cron scheduler if it is running; otherwise it does nothing.

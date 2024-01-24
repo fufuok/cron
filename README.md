@@ -9,7 +9,7 @@ a cron library for go, optimized.
 
 ## ✨ Features
 
-- Added `cron.WithSecondOptional()`
+- Added `cron.WithSecondOptional()` `cron.WithCustomTime()`
 - Support `WithRunImmediately()` option for job scheduling
 - Merge pull request
   - [feat: support overriding the Prev time for a new job/entry](https://github.com/robfig/cron/pull/446)

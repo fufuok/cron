@@ -52,3 +52,10 @@ func WithLogger(logger Logger) Option {
 		c.logger = logger
 	}
 }
+
+// WithCustomTime uses the custom time.
+func WithCustomTime(timenow TimeNow) Option {
+	return func(c *Cron) {
+		c.timenow = timenow
+	}
+}

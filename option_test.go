@@ -7,6 +7,13 @@ import (
 	"time"
 )
 
+func TestWithCustomTime(t *testing.T) {
+	timenow := func() time.Time {
+		return time.Now()
+	}
+	New(WithCustomTime(timenow))
+}
+
 func TestWithLocation(t *testing.T) {
 	c := New(WithLocation(time.UTC))
 	if c.location != time.UTC {
